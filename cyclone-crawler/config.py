@@ -9,3 +9,5 @@ POSTGRES_DB = os.environ.get('POSTGRES_DB')
 
 REDIS_HOST = os.environ.get('REDIS_HOST')
 REDIS_PORT = os.environ.get('REDIS_PORT')
+
+CYCLONE_URL = "https://rammb-data.cira.colostate.edu/tc_realtime/"
