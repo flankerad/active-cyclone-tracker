@@ -12,7 +12,7 @@ def get_active_cyclones(url):
         basin_storms = soup.find_all("div", class_="basin_storms")
 
         active_cyclones = {}
-        for basin in basin_storms:
+        for basin in basin_storms
             region = basin.h3
             lis = basin.ul.children
             data = {}
@@ -24,19 +24,14 @@ def get_active_cyclones(url):
                 cid = text[0].strip()
                 cname = text[1].strip()
                 speed = cname.partition('(')[2].partition(')')[0]
-                name = cname.replace(f'({speed})', ''),
-                data[cid] = {
-                    "cid": cid,
-                    "name": name,
-                    "speed": speed,
-                    "url": ele.a.attrs['href'],
-                    "img": ele.img.attrs['src'],
-                    "active": True
-                }
+                name = cname.replace(f'({speed})', '')
+                name = name.rpartition(' ')
+                ctype = name[0].strip()
+                name = name[1].strip()
+                active_cyclones.append(f"({cid}, {name}, {speed}, {ele.a.attrs['href']},
+                                        {ele.img.attrs['src']}, {ctype}, {region})")
 
-            active_cyclones[region] = data
-
-        return active_cyclones
+        return ','.join(active_cyclones)
 
     except Exception as e:
         logger.error(e)
