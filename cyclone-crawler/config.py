@@ -7,9 +7,9 @@ POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 
-BROKER_HOST = os.environ.get('REDIS_HOST')
-BROKER_PORT = os.environ.get('REDIS_PORT')
-BROKER_PASSWORD = os.environ.get("REDIS_PASSWORD")
+BROKER_HOST = os.environ.get('REDIS_HOST', 'localhost')
+BROKER_PORT = os.environ.get('REDIS_PORT', 6379)
+BROKER_PASSWORD = os.environ.get("REDIS_PASSWORD", '')
 BROKER_DB = 0
 
 CYCLONE_URL = "https://rammb-data.cira.colostate.edu/tc_realtime/"
