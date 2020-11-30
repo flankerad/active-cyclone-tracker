@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 import logging
 
 logger = logging.getLogger()
@@ -13,7 +14,7 @@ def get_active_cyclones(url):
 
         active_cyclones = []
         for basin in basin_storms:
-            region = basin.h3
+            region = basin.h3.text
             lis = basin.ul.children
             for ele in lis:
                 if len(ele) == 1:
@@ -22,17 +23,18 @@ def get_active_cyclones(url):
                 text = ele.a.text.split("-")
                 cid = text[0].strip()
                 cname = text[1].strip()
-                speed = cname.partition('(')[2].partition(')')[0]
+                speed = cname.partition('(')[2].partition(')')[0] or 'null'
                 name = cname.replace(f'({speed})', '')
                 name = name.rpartition(' ')
-                ctype = name[0].strip()
-                name = name[1].strip()
-                active_cyclones.append(f"({cid}, {name}, {speed}, {ele.a.attrs['href']},\
-                                        {ele.img.attrs['src']}, {ctype}, {region})")
+                ctype = name[0].strip() or 'null'
+                name = name[-1].strip()
+                img = ele.img.attrs['src'].strip()
+                href = ele.a.attrs['href'].strip()
+                updated_at = datetime.now().isoformat(sep=' ', timespec='microseconds')
+
+                active_cyclones.append(f"('{cid}','{name}','{speed}','{ctype}','{region}','{href}','{img}', '{updated_at}')")
 
         return ','.join(active_cyclones)
 
     except Exception as e:
         logger.error(e)
-
-
