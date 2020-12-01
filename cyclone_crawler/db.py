@@ -7,23 +7,23 @@ logger.setLevel(logging.DEBUG)
 pg_cur = pg_conn.cursor()
 tableName = 'cyclone'
 
-
-init_table = '''CREATE TABLE IF NOT EXISTS cyclone (
-                cid varchar(50) NOT NULL,
-                name varchar(50) NOT NULL,
-                region varchar(50) NOT NULL,
-                url varchar(150),
-                img varchar(255),
-                speed varchar(45),
-                type  varchar(45),
-                updated_at TIMESTAMP NOT NULL DEFAULT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (cid)
-            ) '''
-
+def init_table():
+    query = '''CREATE TABLE IF NOT EXISTS cyclone (
+                    cid varchar(50) NOT NULL,
+                    name varchar(50) NOT NULL,
+                    region varchar(50) NOT NULL,
+                    url varchar(150),
+                    img varchar(255),
+                    speed varchar(45),
+                    type  varchar(45),
+                    updated_at TIMESTAMP NOT NULL DEFAULT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (cid)
+                ) '''
+    pg_cur.execute(query)
 
 def insert_data(args):
-    insert_data_args = f'''
+    query = f'''
                 BEGIN;
                 TRUNCATE TABLE cyclone;
                 INSERT INTO
@@ -32,7 +32,10 @@ def insert_data(args):
                     VALUES {args} ON CONFLICT DO NOTHING;
                 COMMIT;
             '''
-    morg = pg_cur.mogrify(insert_data_args)
+    morg = pg_cur.mogrify(query)
     logger.debug(morg)
-    
+
     pg_cur.execute(insert_data_args)
+
+def close_connection():
+    return pg_conn.close()

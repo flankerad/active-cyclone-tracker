@@ -42,4 +42,3 @@ def active_cyclones():
 
     data = get_active_cyclones(CYCLONE_URL)
     insert_data(data)
-
