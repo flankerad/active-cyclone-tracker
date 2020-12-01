@@ -1,6 +1,9 @@
 import os
 
 
+HOST_NAME = os.environ.get('HOST_NAME', 'localhost')
+HOST_PORT = os.environ.get('HOST_PORT', 8080)
+
 POSTGRES_USER = os.environ.get('POSTGRES_USER', 'flanker')
 POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', '')
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST', 'localhost')

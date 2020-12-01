@@ -9,16 +9,17 @@ logger.setLevel(logging.DEBUG)
 
 
 
+class GetHandler(BaseHTTPRequestHandler):
 
-class GetHandler(SimpleHTTPRequestHandler):
+    def do_HEAD(self):
+        self.send_resonse(200)
+        self.send_header("Content-type", "applications/json")
+        self.end_headers()
+
     def do_GET(self):
-        import ipdb; ipdb.set_trace()
-        SimpleHTTPRequestHandler.do_GET(self)
-
-Handler=GetHandler
-
-httpd=HTTPServer(("localhost", 8080), Handler)
-print("Running server @8080")
-httpd.serve_forever()
-
+        '''GET REQUEST'''
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps({"recieved":"ok"}).encode())
 
