@@ -30,7 +30,8 @@ def get_active_cyclones(url):
                 name = name[-1].strip()
                 img = ele.img.attrs['src'].strip()
                 href = ele.a.attrs['href'].strip()
-                updated_at = datetime.now().isoformat(sep=' ', timespec='microseconds')
+                updated_at = datetime.now().isoformat(sep=' ',
+                                timespec='microseconds')
 
                 active_cyclones.append(f"('{cid}','{name}','{speed}','{ctype}','{region}','{href}','{img}', '{updated_at}')")
 

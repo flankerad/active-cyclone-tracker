@@ -4,7 +4,7 @@ from celery import Celery
 from celery.schedules import crontab
 from config import CELERY_BROKER_URL, CYCLONE_URL
 from crawler import get_active_cyclones
-from db import insert_data
+from db import init_table, insert_data, close_connection
 from datetime import datetime
 
 logger = logging.getLogger()
@@ -28,7 +28,7 @@ app.conf.update(
 app.conf.beat_schedule = {
     'add-every-1-hour': {
         'task': 'tasks.active_cyclones',
-        'schedule': crontab(minute='*/60')
+        'schedule': crontab(minute='*/1')
     },
 }
 
@@ -41,4 +41,6 @@ def active_cyclones():
     logger.debug(now.strftime("%H:%M:%S"))
 
     data = get_active_cyclones(CYCLONE_URL)
+    init_table()
     insert_data(data)
+    close_connection()

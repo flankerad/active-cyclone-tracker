@@ -24,3 +24,5 @@ CYCLONE_URL = "https://rammb-data.cira.colostate.edu/tc_realtime/"
 CELERY_BROKER_URL=f"redis://{BROKER_HOST}:{BROKER_PORT}/{BROKER_DB}"
 CELERY_BACKEND_URL=f"redis://{BROKER_HOST}:{BROKER_PORT}/{BACKEND_DB}"
 
+
+KEYS = ('id', 'name', 'region', 'url', 'img', 'speed', 'type', 'updated_at', 'created_at')

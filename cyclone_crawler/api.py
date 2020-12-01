@@ -1,25 +1,32 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer, SimpleHTTPRequestHandler
-
-import requests
 import json
 import logging
+from db import insert_data, get_data
+from config import KEYS
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
+def get_response(path):
+      params = {}
+      params['conditions'] = []
 
-class GetHandler(BaseHTTPRequestHandler):
+      if '?' in path:
+            path = path[2:]
+            for p in path.split('&'):
+                  if 'search' in p:
+                        params['fields'] = p.split('=')[1]
+                  params['conditions'].append(p)
 
-    def do_HEAD(self):
-        self.send_resonse(200)
-        self.send_header("Content-type", "applications/json")
-        self.end_headers()
+      data = get_data(params)
+      resp = []
 
-    def do_GET(self):
-        '''GET REQUEST'''
-        self.send_response(200)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
-        self.wfile.write(json.dumps({"recieved":"ok"}).encode())
+      for i in data:
+            d = dict(zip(KEYS, i))
+            d['updated_at'] = d['updated_at'].\
+                              strftime('%d-%m-%Y%H:%M:%S.%f')
+            d['created_at'] = d['created_at'].\
+                              strftime('%d-%m-%Y%H:%M:%S.%f')
+            resp.append(d)
 
+      return resp
