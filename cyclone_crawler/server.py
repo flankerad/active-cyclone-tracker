@@ -20,16 +20,24 @@ class GetHandler(BaseHTTPRequestHandler):
 
       def do_GET(self):
             '''GET REQUEST'''
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            data = get_response(self.path)
-            self.wfile.write(json.dumps(data).encode())
+
+            try:
+                  data = get_response(self.path)
+                  self.send_response(200)
+
+            except Exception as e:
+                  logger.error(e)
+                  self.send_error(400)
+                  data = str(e)
+
+            finally:
+                  self.send_header("Content-type", "application/json")
+                  self.end_headers()
+                  self.wfile.write(json.dumps(data).encode())
 
 
-server_class = HTTPServer
-httpd = server_class((HOST_NAME, HOST_PORT), GetHandler)
-print(f"{time.asctime()}, Starting server @{HOST_NAME}:{HOST_PORT}")
+httpd = HTTPServer((HOST_NAME, int(HOST_PORT)), GetHandler)
+logger.info(f"{time.asctime()}, Starting server @{HOST_NAME}:{HOST_PORT}")
 try:
     httpd.serve_forever()
 except KeyboardInterrupt:

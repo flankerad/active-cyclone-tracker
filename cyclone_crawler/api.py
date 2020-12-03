@@ -1,11 +1,10 @@
 import json
 import logging
-from db import insert_data, get_data
+from db import get_data
 from config import KEYS
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-
 
 def get_response(path):
       params = {}
@@ -17,7 +16,7 @@ def get_response(path):
                   if 'search' in p:
                         params['fields'] = p.split('=')[1]
                   params['conditions'].append(p)
-
+      
       data = get_data(params)
       resp = []
 

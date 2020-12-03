@@ -14,3 +14,6 @@ pg_conn = psycopg2.connect(database=config.POSTGRES_DB,
 redis_conn = redis.Redis(host=config.REDIS_HOST,
                 port=config.REDIS_PORT)
 
+
+def close_connection():
+    return pg_conn.close()
