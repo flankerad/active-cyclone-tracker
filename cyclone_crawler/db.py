@@ -1,29 +1,14 @@
 from psycopg2 import errors
-from connection import pg_conn
 import logging
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-pg_cur = pg_conn.cursor()
+
 tableName = 'cyclones'
 
-# def init_table():
-#     query = '''CREATE TABLE IF NOT EXISTS cyclone (
-#                     cid varchar(50) NOT NULL,
-#                     name varchar(50) NOT NULL,
-#                     region varchar(50) NOT NULL,
-#                     url varchar(150),
-#                     img varchar(255),
-#                     speed varchar(45),
-#                     type  varchar(45),
-#                     updated_at TIMESTAMP NOT NULL,
-#                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-#                     PRIMARY KEY (cid)
-#                 ) '''
-#     pg_cur.execute(query)
 
-def insert_data(args):
+def insert_data(conn, args):
     query = f'''
                 BEGIN;
                 TRUNCATE TABLE cyclones;
@@ -33,22 +18,25 @@ def insert_data(args):
                     VALUES {args};
                 COMMIT;
             '''
+    pg_cur = conn.cursor()
     morg = pg_cur.mogrify(query)
-    logger.debug(morg)
+    logger.info(morg)
 
     pg_cur.execute(query)
 
-def close_connection():
-    return pg_conn.close()
 
-def get_data(params):
+def close_connection(conn):
+    return conn.close()
 
+
+def get_data(conn, params):
     query = query_builder(params)
+    pg_cur = conn.cursor()
+    logger.info(pg_cur.mogrify(query))
     pg_cur.execute(query)
     data = pg_cur.fetchall()
 
     return data
-
 
 
 def query_builder(params):
@@ -71,7 +59,5 @@ def query_builder(params):
         where_clause = f'where {cond[0]}'
 
     query = f'''SELECT {selector} FROM cyclones {where_clause};'''
-
-    logger.info(pg_cur.mogrify(query))
 
     return query

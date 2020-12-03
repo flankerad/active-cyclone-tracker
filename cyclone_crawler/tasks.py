@@ -5,6 +5,7 @@ from celery.schedules import crontab
 from config import CELERY_BROKER_URL, CYCLONE_URL, TASK_INTERVAL
 from crawler import get_active_cyclones
 from db import insert_data, close_connection
+from connection import create_connection
 from datetime import datetime
 
 logger = logging.getLogger()
@@ -34,13 +35,14 @@ app.conf.beat_schedule = {
 
 @app.task
 def active_cyclones():
-    print("Running Active Cyclone Task")
-    logger.debug("Running active cyclone tasks")
+    conn = create_connection()
+
+    logger.info("Running active cyclone tasks")
     now = datetime.now()
 
-    logger.debug(now.strftime("%H:%M:%S"))
+    logger.info(now.strftime("%H:%M:%S"))
 
     data = get_active_cyclones(CYCLONE_URL)
-    # init_table()
-    insert_data(data)
-    # close_connection()
+    insert_data(conn, data)
+
+    close_connection(conn)

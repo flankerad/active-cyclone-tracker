@@ -5,10 +5,11 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer, SimpleHTTPRequestHandler
 from config import HOST_NAME, HOST_PORT
 from api import get_response
+from db import close_connection
+from connection import create_connection
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-
 
 
 class GetHandler(BaseHTTPRequestHandler):
@@ -20,15 +21,17 @@ class GetHandler(BaseHTTPRequestHandler):
 
       def do_GET(self):
             '''GET REQUEST'''
+            conn = create_connection()
 
             try:
-                  data = get_response(self.path)
+                  data = get_response(conn, self.path)
                   self.send_response(200)
 
             except Exception as e:
                   logger.error(e)
                   self.send_error(400)
                   data = str(e)
+                  close_connection(conn)
 
             finally:
                   self.send_header("Content-type", "application/json")
