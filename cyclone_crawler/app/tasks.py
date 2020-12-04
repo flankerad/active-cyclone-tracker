@@ -3,8 +3,8 @@ import logging
 from celery import Celery
 from celery.schedules import crontab
 from config import CELERY_BROKER_URL, CYCLONE_URL, TASK_INTERVAL
-from crawler import get_active_cyclones
-from db import insert_data, close_connection
+from app.crawler import get_active_cyclones
+from app.db import insert_data, close_connection
 from connection import create_connection
 from datetime import datetime
 

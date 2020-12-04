@@ -19,7 +19,7 @@ COPY ./ .
 ENV PYTHONUNBUFFERED=1
 
 
-COPY *.sql /docker-entrypoint-initdb.d/
+COPY initdb/*.sql /docker-entrypoint-initdb.d/
 
 # command to run on container start
 CMD [ "python", "-u", "server.py" ]

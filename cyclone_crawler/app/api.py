@@ -1,6 +1,6 @@
 import json
 import logging
-from db import get_data
+from app.db import get_data
 from config import KEYS
 
 logger = logging.getLogger()

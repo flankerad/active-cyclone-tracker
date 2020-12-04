@@ -4,8 +4,8 @@ import logging
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer, SimpleHTTPRequestHandler
 from config import HOST_NAME, HOST_PORT
-from api import get_response
-from db import close_connection
+from app.api import get_response
+from app.db import close_connection
 from connection import create_connection
 
 logger = logging.getLogger()
