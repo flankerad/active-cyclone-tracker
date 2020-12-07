@@ -18,10 +18,11 @@ Redis
 docker-compose up -d
 ```
 ### API
+
 Fetch data based on condtions.
- > *SELECT name,region FROM active_cyclones WHERE <column1_name>=<value1> AND <column2_name>=<value2>*
+ > *SELECT column1_name,column2_name FROM active_cyclones WHERE <column1_name>=<value1> AND <column2_name>=<value2>*
 ```
-http://0.0.0.0:8000/?<column1_name>='<value1>'&<column2_name>='<value2>'
+http://0.0.0.0:8000/?search='column1_name,column2_name'&<column1_name>='<value1>'&<column2_name>='<value2>'
 ```
 
 ### Table

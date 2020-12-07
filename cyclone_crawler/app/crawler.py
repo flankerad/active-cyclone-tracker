@@ -6,7 +6,24 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+
+
 def get_active_cyclones(url):
+    """
+    Get active cyclones scraps url and returns HTML
+    which is then parsed by Beautiful soup
+    Extracts fields for updating in database
+
+    Parameters
+    ----------
+    url: str, mandatory
+        url to scrap active cyclones
+
+    Returns
+    ----------
+    list
+        a list of string of database fields
+    """
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, features='html.parser')

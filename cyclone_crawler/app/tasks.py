@@ -35,6 +35,13 @@ app.conf.beat_schedule = {
 
 @app.task
 def active_cyclones():
+    '''
+        Task to fetch active cyclones by scraping
+        Tasks runs every 1 hr
+        Insert formatted data into database
+        and then closes connection
+
+    '''
     conn = create_connection()
 
     logger.info("Running active cyclone tasks")

@@ -14,6 +14,8 @@ logger.setLevel(logging.DEBUG)
 
 class GetHandler(BaseHTTPRequestHandler):
 
+      """Handles Server requests for API"""
+
       def do_HEAD(self):
             self.send_response(200)
             self.send_header("Content-type", "applications/json")

@@ -30,6 +30,15 @@ def close_connection(conn):
 
 
 def get_data(conn, params):
+    """
+    Parameters
+    ----------
+    conn: object, mandatory
+        postgres connection object
+
+    params: dict, mandatory
+        url parameters of API
+    """
     query = query_builder(params)
     pg_cur = conn.cursor()
     logger.info(pg_cur.mogrify(query))

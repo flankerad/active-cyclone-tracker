@@ -7,6 +7,30 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 def get_response(conn, path):
+      """
+      Parses url params from Path
+      Creates params dictionary
+      params: {
+            fields: <values>.
+            conditions: <values>
+            }
+      for building query by db.query_builder
+
+      Parameters
+      ----------
+      conn: object, mandatory
+            postgres connection object
+
+      path: str, mandatory
+            url parameters of API
+
+      Returns
+      ----------
+      list
+            a list of dictionaries of active cyclones
+            with time updated into string
+      """
+
       params = {}
       params['conditions'] = []
 
